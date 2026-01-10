@@ -2,6 +2,21 @@
 
 Get KernelSU running on your Android device in minutes.
 
+## 🔍 Device Check Helper (Optional)
+
+Before starting, you can use our helper script to check your device compatibility:
+
+```bash
+# Connect your device with USB debugging enabled
+./scripts/check_device.sh
+```
+
+This will:
+- Detect your device model and kernel version
+- Check if your bootloader is unlocked
+- Recommend the best installation method
+- Provide device-specific guide links
+
 ## 🚀 Quick Install (For Supported Devices)
 
 ### Step 1: Check Compatibility
