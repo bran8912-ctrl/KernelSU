@@ -32,6 +32,10 @@ Currently, only the `arm64-v8a` and `x86_64` architectures are supported.
 - [How to build](https://kernelsu.org/guide/how-to-build.html)
 - [Official website](https://kernelsu.org/)
 
+### Device-Specific Guides
+
+- [Samsung Galaxy S21+ Build Guide](BUILD_GUIDE_S21_PLUS.md)
+
 ## Translation
 
 To help translate KernelSU or improve existing translations, please use [Weblate](https://hosted.weblate.org/engage/kernelsu/). PR of Manager's translation is no longer accepted, because it will conflict with Weblate.
