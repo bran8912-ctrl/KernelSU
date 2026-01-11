@@ -27,6 +27,16 @@ This repository now contains comprehensive documentation and tools to help you b
    - Template for contributing new device guides
    - Common device categories
 
+### 📦 Modules
+
+**[modules/Meta-Hybrid-v2.0.25](modules/Meta-Hybrid-v2.0.25/)** - Hybrid Mount Metamodule
+- Advanced module mounting system for KernelSU
+- 2GB ext4 image for module storage
+- Multi-partition support (system, vendor, product, etc.)
+- Web-based management interface
+- Complete installation guide: [modules/MODULE-INSTALL.md](modules/MODULE-INSTALL.md)
+- S21+ verified and tested
+
 ### 🛠️ Tools
 
 **[scripts/check_device.sh](scripts/check_device.sh)** - Automated Device Checker
@@ -64,6 +74,34 @@ This will tell you:
 1. Follow [docs/BUILD_GUIDE_S21_PLUS.md](docs/BUILD_GUIDE_S21_PLUS.md)
 2. Section "Method B: Building Custom Kernel"
 3. Use KernelSU v0.9.5 (last non-GKI version)
+
+### Step 3: Root Verification with Meta-Hybrid (Optional)
+
+After KernelSU is installed, you can enhance your module management with Meta-Hybrid:
+
+1. **Install Meta-Hybrid Module**:
+   - Open KernelSU Manager
+   - Go to Modules section
+   - Install from `modules/Meta-Hybrid-v2.0.25/` directory
+   - Or install the original ZIP file
+
+2. **Verify Installation**:
+   ```bash
+   adb shell su -c "ls -la /data/adb/modules/meta-hybrid/"
+   adb shell su -c "cat /data/adb/meta-hybrid/daemon.log"
+   ```
+
+3. **Use Advanced Features**:
+   - 2GB ext4 storage for modules
+   - Web-based management interface
+   - Hybrid mount for better compatibility
+   - Multi-partition support
+
+4. **Complete Guide**: See [modules/MODULE-INSTALL.md](modules/MODULE-INSTALL.md) for:
+   - Detailed installation steps
+   - Configuration options
+   - Troubleshooting for S21+
+   - Script explanations
 
 ## Installation Methods Covered
 
@@ -139,9 +177,22 @@ Samsung S21+ bootloader unlock:
 ```
 KernelSU/
 ├── QUICKSTART.md                          # Quick start for all devices
+├── S21_PLUS_GUIDE_SUMMARY.md             # This file - complete overview
 ├── docs/
 │   ├── README.md                          # Updated with device guide links
 │   └── BUILD_GUIDE_S21_PLUS.md           # Complete S21+ guide
+├── modules/
+│   ├── README.md                          # Modules directory overview
+│   ├── MODULE-INSTALL.md                  # Meta-Hybrid installation guide
+│   └── Meta-Hybrid-v2.0.25/              # Meta-Hybrid metamodule
+│       ├── module.prop                    # Module metadata
+│       ├── customize.sh                   # Installation script
+│       ├── metainstall.sh                 # KernelSU metamodule install
+│       ├── metamount.sh                   # KernelSU metamodule mount
+│       ├── metauninstall.sh               # KernelSU metamodule uninstall
+│       ├── binaries/                      # Architecture-specific binaries
+│       │   └── arm64-v8a/meta-hybrid     # For S21+ devices
+│       └── webroot/                       # Web UI assets
 ├── website/docs/guide/
 │   ├── device-guides.md                   # Device guide index
 │   └── build-s21-plus.md                  # S21+ guide (website copy)
