@@ -10,7 +10,8 @@ This guide will help you build and install KernelSU on your Samsung Galaxy S21+ 
 5. [Method A: Using Pre-built Images (Recommended)](#method-a-using-pre-built-images-recommended)
 6. [Method B: Building Custom Kernel (Advanced)](#method-b-building-custom-kernel-advanced)
 7. [Post-Installation](#post-installation)
-8. [Troubleshooting](#troubleshooting)
+8. [Root Verification with Meta-Hybrid Module](#root-verification-with-meta-hybrid-module)
+9. [Troubleshooting](#troubleshooting)
 
 ## Device Information
 
@@ -291,6 +292,106 @@ See [Metamodule Guide](https://kernelsu.org/guide/metamodule.html) for details.
 1. Open KernelSU Manager
 2. Grant root to apps you trust
 3. Configure App Profiles for security
+
+## Root Verification with Meta-Hybrid Module
+
+Meta-Hybrid is an advanced metamodule that enhances KernelSU's module management capabilities. It's specifically tested and verified for Samsung Galaxy S21+ devices.
+
+### What is Meta-Hybrid?
+
+Meta-Hybrid provides:
+- **Hybrid Mount System**: Advanced overlay filesystem for modules
+- **2GB Module Storage**: Dedicated ext4 image for module files
+- **Multi-Partition Support**: system, vendor, product, system_ext, odm, oem, apex
+- **Web Management**: Built-in web interface for module control
+- **S21+ Verified**: Tested on both Exynos and Snapdragon variants
+
+### Installation
+
+**Method 1: From Repository (If you cloned the repo)**
+
+```bash
+# Navigate to repository
+cd /path/to/KernelSU
+
+# Push module to device
+adb push modules/Meta-Hybrid-v2.0.25 /sdcard/
+
+# Install using KernelSU Manager:
+# 1. Open KernelSU Manager app
+# 2. Go to Modules section
+# 3. Tap + button
+# 4. Select Meta-Hybrid-v2.0.25 directory or ZIP
+# 5. Wait for installation
+# 6. Reboot device
+```
+
+**Method 2: ADB Manual Installation**
+
+```bash
+# Copy module files to device
+adb push modules/Meta-Hybrid-v2.0.25 /data/adb/modules/meta-hybrid
+
+# Set proper permissions
+adb shell su -c "chown -R 0:0 /data/adb/modules/meta-hybrid"
+adb shell su -c "chmod -R 0755 /data/adb/modules/meta-hybrid"
+adb shell su -c "chmod 0644 /data/adb/modules/meta-hybrid/*.prop"
+adb shell su -c "chmod 0644 /data/adb/modules/meta-hybrid/*.toml"
+
+# Reboot
+adb reboot
+```
+
+### Verification Steps
+
+After installation and reboot:
+
+```bash
+# 1. Verify module is loaded
+adb shell su -c "ls -la /data/adb/modules/meta-hybrid/"
+
+# 2. Check metamodule symlink
+adb shell su -c "ls -la /data/adb/metamodule"
+# Should point to: /data/adb/modules/meta-hybrid
+
+# 3. Verify daemon is running
+adb shell su -c "cat /data/adb/meta-hybrid/daemon.log"
+
+# 4. Check modules.img exists and is mounted
+adb shell su -c "ls -lh /data/adb/meta-hybrid/modules.img"
+adb shell su -c "mount | grep modules.img"
+
+# 5. Verify in KernelSU Manager
+# Should show "Hybrid Mount v2.0.25" as enabled
+```
+
+### Configuration
+
+Default configuration works for most S21+ users. To customize:
+
+```bash
+# Edit config file
+adb shell su -c "vi /data/adb/meta-hybrid/config.toml"
+```
+
+Configuration options:
+- `moduledir`: Module directory path (default: `/data/adb/modules/`)
+- `mountsource`: Root solution (`"KSU"` for KernelSU)
+- `verbose`: Enable debug logging (`true` or `false`)
+- `partitions`: Custom partition list (default: `[]` for auto-detect)
+
+### Complete Documentation
+
+For comprehensive information, troubleshooting, and advanced usage:
+- **Installation Guide**: [modules/MODULE-INSTALL.md](../modules/MODULE-INSTALL.md)
+- **Modules Overview**: [modules/README.md](../modules/README.md)
+
+The installation guide includes:
+- Detailed explanation of all scripts (metainstall.sh, metamount.sh, etc.)
+- S21+ specific troubleshooting
+- Recovery procedures
+- Configuration options
+- Safety guidelines
 
 ## Troubleshooting
 
